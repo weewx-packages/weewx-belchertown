@@ -52,15 +52,14 @@ This is the original Belchertown skin, back in active development and refactored
 
 These steps get you a working site. Everything after this section is optional.
 
-**1. Install the published catalog archive.** Use the `weectl` from the
-Python environment running WeeWX:
+**1. Install the published catalog archive.** For a pip installation, activate
+the existing virtual environment running your WeeWX service first and use its
+`weectl`. For a distribution package installation, use its `weectl`, with
+`sudo` if required. Add `--config /path/to/weewx.conf` when needed.
 
 ```sh
 weectl extension install https://github.com/weewx-packages/catalog/releases/download/belchertown/v3.0.0/belchertown-3.0.0.tar.gz
 ```
-
-Add `--config /path/to/weewx.conf` when needed. A package installation may
-require `sudo`; activate the WeeWX virtual environment for a pip installation.
 
 **2. Check the installed report.** The installer copies `skins/Belchertown` and
 `user.belchertown`, then creates `[StdReport][[Belchertown]]`.
