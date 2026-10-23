@@ -1,5 +1,13 @@
 # Belchertown weewx skin
 
+This organization maintains a separate distribution of the Belchertown 3.0.0
+skin from [poblabs/weewx-belchertown](https://github.com/poblabs/weewx-belchertown).
+The fixed catalog archive below targets WeeWX 5.x and Python 3.10 or newer.
+It generates archive charts, records, a configurable weather website and
+optional browser MQTT updates. External forecast and alert services need network
+access; their availability is separate from station data collection.
+
+
 [![Latest Stable Version](https://img.shields.io/github/v/release/poblabs/weewx-belchertown.svg?style=flat-square)](https://github.com/poblabs/weewx-belchertown/releases) [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square&amp;logo=paypal&amp;colorA=aaaaaa)](https://paypal.me/pobhq)
 
 A skin (website theme) for the [weewx weather software](https://weewx.com), modeled after my website [BelchertownWeather.com](https://belchertownweather.com).
@@ -19,7 +27,7 @@ A skin (website theme) for the [weewx weather software](https://weewx.com), mode
 > [!IMPORTANT]
 > **Belchertown 3 requires weewx 5.0 or newer.** On weewx 3 or 4, use [Belchertown 1.3.1](https://github.com/poblabs/weewx-belchertown/releases/tag/weewx-belchertown-1.3.1). Coming from 1.3.1? The wiki has an [upgrade guide](https://github.com/poblabs/weewx-belchertown/wiki/Upgrading-to-Belchertown-3).
 
-## Belchertown 3.0: the original, rebuilt
+## Belchertown 3.0: weather pages and charts
 
 This is the original Belchertown skin, back in active development and refactored from the ground up: a chart builder that writes your chart settings for you, faster pages, a new home page and records page, forecasts and alerts with no setup, and a °F/°C button, all on weewx 5. See the [changelog](changelog) for everything that changed.
 
@@ -43,13 +51,19 @@ This is the original Belchertown skin, back in active development and refactored
 
 These steps get you a working site. Everything after this section is optional.
 
-**1. Download** the latest `weewx-belchertown-x.x.x.tar.gz` from the [releases page](https://github.com/poblabs/weewx-belchertown/releases).
+**1. Install the published catalog archive.** Use the `weectl` from the
+Python environment running WeeWX:
 
-**2. Install it.** Replace `x.x.x` with the version you downloaded:
+```sh
+weectl extension install https://github.com/weewx-packages/catalog/releases/download/belchertown/v3.0.0/belchertown-3.0.0.tar.gz
+```
 
-```
-weectl extension install weewx-belchertown-x.x.x.tar.gz
-```
+Add `--config /path/to/weewx.conf` when needed. A package installation may
+require `sudo`; activate the WeeWX virtual environment for a pip installation.
+
+**2. Check the installed report.** The installer copies `skins/Belchertown` and
+`user.belchertown`, then creates `[StdReport][[Belchertown]]`.
+No separate MQTT publisher is installed; follow the MQTT section if wanted.
 
 **3. Check your station's location.** Open your `weewx.conf` (see the table below) and make sure the `[Station]` section has your `latitude` and `longitude`. The forecast, earthquakes and sunrise/sunset all use them.
 
@@ -60,7 +74,11 @@ weectl extension install weewx-belchertown-x.x.x.tar.gz
 | Package (`apt`, `yum`, `dnf`) | `/etc/weewx/weewx.conf` | `/etc/weewx/skins/Belchertown` | `/var/www/html/weewx` |
 | `pip` | `~/weewx-data/weewx.conf` | `~/weewx-data/skins/Belchertown` | `~/weewx-data/public_html` |
 
-**4. Choose where the site goes.** The installer sets `HTML_ROOT = belchertown` in the `[[Belchertown]]` section, which puts the site in a `belchertown` folder next to `weewx.conf`, where your web server probably can't see it. Change it to a folder inside your website, for example:
+**4. Check where the site goes.** The extension requests `HTML_ROOT = belchertown`.
+WeeWX's installer prefixes that relative path with your station's configured
+`[StdReport] HTML_ROOT`. Review the merged `[[Belchertown]]` setting and make
+sure the result is writable by WeeWX and served by your web server. You can
+set an explicit path, for example:
 
 ```
     [[Belchertown]]
@@ -294,7 +312,7 @@ Sitemap: http://YOURWEBSITE/sitemap.xml
 
 ## Forecasts
 
-**The forecast works out of the box.** With no setup at all, the current conditions, the 7-day, 3-hour and 1-hour forecasts and the air quality come from [Open-Meteo](https://open-meteo.com), which is free, needs no account and covers the whole world.
+With the default configuration, the skin requests forecast data over the network. With no setup at all, the current conditions, the 7-day, 3-hour and 1-hour forecasts and the air quality come from [Open-Meteo](https://open-meteo.com), which is free, needs no account and covers the whole world.
 
 **Weather alerts** (watches and warnings) also work with no setup **in the US**: they come from the National Weather Service. Outside the US there are no alerts unless you use Xweather.
 
@@ -652,7 +670,11 @@ weectl extension uninstall Belchertown
 
 ## Development version
 
-To try the newest changes before they're released, download the [`next` branch](https://github.com/poblabs/weewx-belchertown/archive/next.zip) and install it with `weectl extension install next.zip`, or copy its files over your `skins/Belchertown` and `bin/user` folders. Then restart weewx. The `next` branch is where the 3.0 rewrite happens, so expect rough edges.
+Use the maintained release archive in [Quick start](#quick-start) for a station.
+The upstream `next` branch is a separate moving development source; it can
+differ from this distribution. Back up `weewx.conf`, the skin and any custom
+files before installing an update. For migration notes, consult the linked
+upstream upgrade guide but use this repository's fixed archive URL.
 
 ## Donate
 
@@ -670,3 +692,9 @@ This project took a lot of coffee to create. If you enjoy this skin and find som
 * Brian at weather34.com for the weather icons from the Simplicity 2015 theme, used with agreement.
 * Some icons remixed by michaelundwd. Thanks!
 * uajqq and the [New Belchertown](https://github.com/uajqq/weewx-belchertown-new) contributors, for keeping Belchertown alive between 2024 and 2026. Fixes from that fork are credited where they were used, such as michaelundwd's consecutive rain days fix.
+
+## License
+
+The skin retains Pat O'Brien's [GPLv3 license](LICENSE) and its original assets
+and third-party notices. Keep the bundled font and library license files when
+copying or publishing the generated site.

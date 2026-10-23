@@ -1,51 +1,24 @@
-This is the Belchertown skin for the weewx weather system.
+Belchertown 3.0.0 skin for WeeWX
 Copyright 2018 Pat O'Brien
 
-Please view the README.md on GitHub for full configuration instructions. https://github.com/poblabs/weewx-belchertown
+The maintained installation and configuration guide is README.md in this
+repository. It covers stock WeeWX 5, report paths, MQTT and forecasts.
 
-Installation instructions:
+Install the fixed archive:
 
-1) Run the installer:
+weectl extension install https://github.com/weewx-packages/catalog/releases/download/belchertown/v3.0.0/belchertown-3.0.0.tar.gz
 
-sudo wee_extension --install weewx-belchertown.tgz
+Use the WeeWX environment and add --config /path/to/weewx.conf if needed.
+Restart WeeWX after reviewing [StdReport][[Belchertown]]. Wait for the next
+archive interval or run weectl report run Belchertown. The installer uses
+skins/Belchertown, user.belchertown and HTML_ROOT = belchertown by default;
+WeeWX prefixes the relative report path with the station's configured web
+output root. Check the merged directory in weewx.conf.
 
-2) Restart weewx:
+Upgrade using the fixed archive after backing up the skin and configuration.
+Remove with weectl extension uninstall Belchertown and restart WeeWX.
+Forecasts use the configured provider; the former DarkSky instructions no
+longer describe this release. See README.md for the supported providers.
 
-sudo /etc/init.d/weewx stop
-sudo /etc/init.d/weewx start
-
-3) Wait for an archive period, or run wee_reports
-
-4) Look at the result in the 'belchertown' subdirectory.
-
-public_html/belchertown
-
-
-Configuration options:
-
-While optional, you should first setup the DarkSky API so you can enable the forecasts option. 
-Weather icons, the 8 day forecast and visibility all come from DarkSky's API. 
-
-There are a number of options all set as a default within the skin.conf file. 
-It is recommended that any option you want to override to add it to the weewx.conf
-file. This way your changes do not get erased on skin or weewx upgrades. 
-
-For example, to add a logo to your site, you would want to open your weewx.conf and
-find the Belchertown skin section. Add an [[[Extras]]] stanza and then the logo_image variable
-and the location of the logo. 
-
-Example:
-
-[StdReport]
-    [[Belchertown]]
-        [[[Extras]]]
-            logo_image = "https://belchertownweather.com/images/content/btownwx-logo-slim.png"
-    
-For a list of Extra variables that can be changed, you can look in the skin.conf, or look on the 
-GitHub repository for the variables and their descriptions.
-
-Credits:
-
-Highcharts graph extension from Gary Roderick at https://github.com/gjr80/weewx-highcharts
-Weather icon set from Brian at http://weather34.com
-Forecast data from http://darksky.net
+Original credits are retained in README.md, including Gary Roderick's chart
+work, Brian's weather icons and the upstream contributors. See LICENSE for GPLv3.
