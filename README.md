@@ -1,7 +1,8 @@
 # Belchertown weewx skin
 
-This organization maintains a separate distribution of the Belchertown 3.0.0
-skin from [poblabs/weewx-belchertown](https://github.com/poblabs/weewx-belchertown).
+This repository mirrors [poblabs/weewx-belchertown](https://github.com/poblabs/weewx-belchertown).
+The catalog distributes the original Belchertown 3.0.0 skin and its assets.
+Documentation is maintained separately from the source mirror.
 The fixed catalog archive below targets WeeWX 5.x and Python 3.10 or newer.
 It generates archive charts, records, a configurable weather website and
 optional browser MQTT updates. External forecast and alert services need network
